@@ -11,3 +11,8 @@ def copies_of_string(string,n):
 
 
 
+"""
+2. Make a two-player Rock-Paper-Scissors game. Ask for players’ names first, then ask them to
+play, make a comparison, print out a message of congratulations to the winner, and finally
+ask if the players want to start a new game.
+"""
