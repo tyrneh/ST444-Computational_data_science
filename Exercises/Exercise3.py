@@ -80,3 +80,96 @@ def prime_checker(n):
 4. Implement the bisection method to find the minimum of a univariate function f. 
 Here f' is assumed unknown.
 """
+
+"""
+idea: we will define a function using f(x),
+create a function to evaluate its derivative, 
+and then define a function bisection_optimisation() to find the optimum
+"""
+
+
+def f(x):
+    # define function here
+    return (x+1)**2
+
+def bisection_optimization(upper = 1, lower = -1, tolerance = 1.0e-8):
+    """
+    calculates optimum of function.
+    define function using f(x) in previous step
+    """
+
+    def derivative_of_function_at_t(t, epsilon=1.0e-5):
+        """
+        calculates the derivative evaluated at t of function f(x)
+        we approximate the derivative of f() using finite differencing
+
+        input: x, f(x)
+        output: derivative of function at x
+        """
+        return ((f(t + epsilon) - f(t - epsilon)) / (2 * epsilon))
+
+    iter = 0
+    uncertainty = upper - lower
+    while uncertainty > tolerance:
+        middle = (upper + lower)/2
+        if derivative_of_function_at_t(middle) > 0:
+            upper = middle
+        else:
+            lower = middle
+        uncertainty = upper - lower
+        iter += 1
+    print("Min at:", middle)
+    print("Num of iterations:", iter)
+
+# bisection_optimization()
+
+
+"""
+5. Implement the Newton’s method to find the minimum of a univariate function f. 
+Here f' and f'' are assumed unknown.
+"""
+
+"""
+idea: we will define a function using f(x),
+create a function to evaluate its derivative and a function to evaluate its 2nd derivative, 
+and then define a function newton_optimisation() to find the optimum
+"""
+
+def f(x):
+    # define function here
+    return (x+8)**2
+
+def newton_optimisation(now = 1, past = 0, tolerance = 1.0e-8, max_iter = 1000):
+    """
+    calculates optimum of function.
+    define function using f(x) in previous step
+    """
+
+    def derivative_of_function_at_t(t, epsilon=1.0e-5):
+        """
+        calculates the derivative evaluated at t of function f(x)
+        we approximate the derivative of f() using finite differencing
+
+        input: x, f(x)
+        output: derivative of function at x
+        """
+        return ((f(t + epsilon) - f(t - epsilon)) / (2 * epsilon))
+
+    def second_derivative_of_function_at_t(t, epsilon=1.0e-5):
+        derivative_pos = (f(t + epsilon) - f(t)) / (epsilon)
+        derivative_neg = (f(t) - f(t - epsilon)) / (epsilon)
+        second_derivative = (derivative_pos - derivative_neg) / (epsilon)
+        return second_derivative
+
+    iter = 0
+    # we need to check BOTH delta-x < tolerance and f'(x) < tolerance are satisfied
+    while abs(now - past) > tolerance or abs(derivative_of_function_at_t(now)) > tolerance:
+        past = now
+        now = now - derivative_of_function_at_t(now) / second_derivative_of_function_at_t(now)
+        iter += 1
+        if iter > max_iter:
+            break
+    print("Minimum at", now)
+    print("Number of total iterations is", iter)
+
+# newton_optimisation()
